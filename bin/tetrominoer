@@ -1,0 +1,12 @@
+#!/usr/bin/env ruby
+require 'tetrominoer'
+	       
+module Tetrominoer
+
+  l = PieceMatrixGenerator.new(5)
+
+  l.generate
+
+  binding.pry
+
+end
