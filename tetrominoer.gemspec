@@ -1,22 +1,19 @@
 # -*- encoding: utf-8 -*-
-$:.push File.expand_path("../lib", __FILE__)
-require "tetrominoer/version"
 
-Gem::Specification.new do |s|
-  s.name        = "tetrominoer"
-  s.version     = Tetrominoer::VERSION
-  s.platform    = Gem::Platform::RUBY
-  s.authors     = ["William Duncan"]
-  s.email       = ["will@aeondynamics.com"]
-  s.homepage    = "blackeon.net"
-  s.summary     = %q{A sample gem}
-  s.description = %q{A sample gem. It doesn't do a whole lot, but it's still useful.}
+Gem::Specification.new do |spec|
+  spec.name        = "tetrominoer"
+  spec.version     = "0.0.1"
+  spec.authors     = ["William Duncan"]
+  spec.email       = ["will@aeondynamicspec.com"]
+  spec.homepage    = "https://github.com/gtech/Tetrominoer"
+  spec.summary     = %q{Solves Tetrominoe Puzzles}
+  spec.description = %q{Uses Knuth's dancing links algorithm to quickly solve the tetronimo puzzles from 'The Talos Principle'}
 
-  s.add_runtime_dependency "launchy"
-  s.add_development_dependency "rspec", "~>2.5.0"
+  spec.add_development_dependency "rspec", "~> 2.5.0"
+  spec.add_development_dependency "pry"
 
-  s.files         = `git ls-files`.split("\n")
-  s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")
-  s.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
-  s.require_paths = ["lib"]
+  spec.files         = `git ls-files`.split("\n")
+  spec.test_files    = `git ls-files -- {test}/*`.split("\n")
+  spec.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
+  spec.require_paths = ["lib"]
 end

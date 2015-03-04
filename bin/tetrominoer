@@ -1,7 +1,6 @@
 #!/usr/bin/env ruby
-require 'tetrominoer.rb'
-	       
-module Tetrominoer
+$: << File.join(File.dirname(__FILE__), "..", "lib")
+require "tetrominoer"
 
 #  l = PieceMatrixGenerator.new(5)
 
@@ -10,5 +9,3 @@ module Tetrominoer
   o = O.new()
   l = L.new()
   binding.pry
-  
-end

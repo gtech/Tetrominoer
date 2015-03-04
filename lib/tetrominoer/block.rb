@@ -1,39 +1,67 @@
 class Block
-    protected @configurations = Hash.new()
-    attr_reader :@configurations
+  @CONFIGURATIONS = Hash.new()
+  @ROWS = Int
+  @COLUMNS = Int
+  @PERMUTATIONS = Int
+  attr_reader :CONFIGURATIONS, :ROWS, :COLUMNS, :PERMUTATIONS
 end
 
 class O < Block
   def initialize
-    @configurations = {1=>[[1,1],
-                           [1,1]]
-                      }
+    @PERMUTATIONS = 1
+    @CONFIGURATIONS = 
+    {1=>
+     {
+      rows=>2,
+      columns=>2,
+      config=>[1,1,1,1]
+     }}
+
+# permutations=> 1
+#                        rows=> 2
+#                        columns=> 2
+                       
+
+#                        1=>[[1,1],
+#                            [1,1]]
+#                       }
+#     @CONFIGURATIONS = [1,1,1,1]
   end
 end
 
 class L < Block
  def initialize
-    @configurations = { 1=>[[0,1],
-                            [0,1],
-                            [1,1]],
+    @PERMUTATIONS = 4
+    @CONFIGURATIONS = 
+      {1=>
+       {
+        rows=>3,
+        columns=>2,
+        config=>[0,1,0,1,1,1]
+       }
+      }
+    
 
-                       2=>[[1,0,0],
-                           [1,1,1]],
+    # @CONFIGURATIONS = { 1=>[[0,1],
+    #                         [0,1],
+    #                         [1,1]],
+
+    #                    2=>[[1,0,0],
+    #                        [1,1,1]],
                        
-                       3=>[[1,1],
-                           [1,0],
-                           [1,0]],
+    #                    3=>[[1,1],
+    #                        [1,0],
+    #                        [1,0]],
                        
-                       4=>[[1,1,1],
-                           [0,0,1]],
-                      }
+    #                    4=>[[1,1,1],
+    #                        [0,0,1]],
+    #                   }
   end
-e
 end
 
 class R < Block
   def initialize
-    @configurations = { 1=>[[1,0],
+    @CONFIGURATIONS = { 1=>[[1,0],
                             [1,0],
                             [1,1]],
 
@@ -52,7 +80,7 @@ end
 
 class I < Block
   def initialize
-    @configurations = {1=> [[1,1,1,1]],
+    @CONFIGURATIONS = {1=> [[1,1,1,1]],
                        2=>[[1],
                            [1],
                            [1],
@@ -63,7 +91,7 @@ end
 
 class S < Block
   def initialize
-    @configurations = { 1=>[[0,1,1],
+    @CONFIGURATIONS = { 1=>[[0,1,1],
                             [1,1,0]],
                        
                        2=>[[1,0],
@@ -75,7 +103,7 @@ end
 
 class Z < Block
   def initialize
-    @configurations = { 1=>[[1,1,0],
+    @CONFIGURATIONS = { 1=>[[1,1,0],
                             [0,1,1]],
                        
                        2=>[[0,1],
