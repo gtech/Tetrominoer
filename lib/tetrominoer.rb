@@ -2,6 +2,8 @@
 
 require 'matrix'
 require 'pry'
+require 'lib/block'
+
 
 # Enumerate all possible position matrices for each piece type
 # create aray with all 9 pieces
@@ -10,16 +12,39 @@ require 'pry'
 # If you get to the end of a piece's position matrices, start again with the next first piece's matrix
 # If however you are on hte last piece's matrix and all values are correct, print the matrix for each piece.
 
+#Take in the dimentions of the board and produce a matrix for all 
+# the positions for each unique piece we are using
+#
+#Read matrix positions as 
+#      0 1
+#      2 3
+#
+#Block class
+#Has: Array of configurations, 
+#
+#
+#
+#
+#
+#
+
+
 module Tetrominoer
 
-  class Matrix
-    def sum
-      sum = 0
-      self.each {|i| sum +=i}
-      return sum
-    end
-  end  
 
+  class Tetrominoer
+    def initialize(options)
+      #Take #x# and make a 2d array with those dimensions
+#      size = options[0].split('x')
+ #     @board = Array.new(size[0]) {Array.new(size[1],0)}
+      o = O.new()
+      l = L.new()
+      binding.pry
+      
+    end
+      
+    
+  end
 
   class PieceMatrixGenerator
 
