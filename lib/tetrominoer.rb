@@ -3,6 +3,7 @@
 require 'matrix'
 require 'pry'
 require 'tetrominoer/block'
+require 'tetrominoer/possibility_generator'
 
 
 # Enumerate all possible position matrices for each piece type

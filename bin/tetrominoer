@@ -2,10 +2,16 @@
 $: << File.join(File.dirname(__FILE__), "..", "lib")
 require "tetrominoer"
 
-#  l = PieceMatrixGenerator.new(5)
+module Tetrominoer
 
- # l.generate
 
   o = O.new()
   l = L.new()
   binding.pry
+
+
+
+end
+#  l = PieceMatrixGenerator.new(5)
+
+ # l.generate

@@ -2,11 +2,9 @@ module Tetrominoer
 
   #Major class for creating blocks, every block has these features.
   class Block
-    @CONFIGURATIONS = Hash.new()
-    @ROWS = Int
-    @COLUMNS = Int
-    @PERMUTATIONS = Int
-    attr_reader :CONFIGURATIONS, :ROWS, :COLUMNS, :PERMUTATIONS
+    @CONFIGS = Hash.new()
+    @PERMUTATIONS = Integer
+    attr_reader :CONFIGS, :PERMUTATIONS
   end
 
 
@@ -14,12 +12,12 @@ module Tetrominoer
   class O < Block
     def initialize
       @PERMUTATIONS = 1
-      @CONFIGURATIONS = 
+      @CONFIGS = 
         {1=>
         {
-          rows=>2,
-          columns=>2,
-          config=>[1,1,1,1]
+          rows: 2,
+          columns: 2,
+          config: [1,1,1,1]
         }}
 
       # permutations=> 1
@@ -30,24 +28,24 @@ module Tetrominoer
       #                        1=>[[1,1],
       #                            [1,1]]
       #                       }
-      #     @CONFIGURATIONS = [1,1,1,1]
+      #     @CONFIGS = [1,1,1,1]
     end
   end
 
   class L < Block
     def initialize
       @PERMUTATIONS = 4
-      @CONFIGURATIONS = 
+      @CONFIGS = 
         {1=>
         {
-          rows=>3,
-          columns=>2,
-          config=>[0,1,0,1,1,1]
+          rows: 3,
+          columns: 2,
+          config: [0,1,0,1,1,1]
         }
       }
       
 
-      # @CONFIGURATIONS = { 1=>[[0,1],
+      # @CONFIGS = { 1=>[[0,1],
       #                         [0,1],
       #                         [1,1]],
 
@@ -66,7 +64,7 @@ module Tetrominoer
 
   class R < Block
     def initialize
-      @CONFIGURATIONS = { 1=>[[1,0],
+      @CONFIGS = { 1=>[[1,0],
                               [1,0],
                               [1,1]],
 
@@ -85,7 +83,7 @@ module Tetrominoer
 
   class I < Block
     def initialize
-      @CONFIGURATIONS = {1=> [[1,1,1,1]],
+      @CONFIGS = {1=> [[1,1,1,1]],
         2=>[[1],
             [1],
             [1],
@@ -96,7 +94,7 @@ module Tetrominoer
 
   class S < Block
     def initialize
-      @CONFIGURATIONS = { 1=>[[0,1,1],
+      @CONFIGS = { 1=>[[0,1,1],
                               [1,1,0]],
         
         2=>[[1,0],
@@ -108,7 +106,7 @@ module Tetrominoer
 
   class Z < Block
     def initialize
-      @CONFIGURATIONS = { 1=>[[1,1,0],
+      @CONFIGS = { 1=>[[1,1,0],
                               [0,1,1]],
         
         2=>[[0,1],
