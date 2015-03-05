@@ -1,6 +1,7 @@
 module Tetrominoer
 
-  class PossibiltyGenerator
+  class PossibilityGenerator
+    #@possibility_space = Array.new(0,0)
 
     def initialize(x_size, y_size)
       @ROWS = y_size
@@ -11,7 +12,7 @@ module Tetrominoer
       @possibility_space = Array.new(x_size) {Array.new(y_size){0}}
       
       #A column for every cell in the puzzle space
-      @cell_space = Array.new(x_size*y_size)
+      @cell_space = Array.new(x_size*y_size,0)
     end
 
     #INPUT array of the blocks to be used
@@ -27,24 +28,29 @@ module Tetrominoer
     #When all blocks are exhausted, return the possibilty rows with the
     #block matrix attached
     def generate(block_array)
-      #TODO edge cases, and test O block(binding.pry is in place for this)
+      #TODO edge cases, O still has one extra possibility on 3x3, figure out how to isolate it and try
+      #to generalize
+
       #Find every possible row of every config for every block
       block_array.each do |block|
+        block_possibilities = Array.new
         #Find possible rows for every config of this block
         block.CONFIGS.each do |config|
           #The first map of the block config on the space array
-          cell_space_map = Array.new(0)
+          cell_space_map = @cell_space.dup
           #The board index of the space array used for mapping
           space_index = 0
           #the index of the config array
           config_index = 0
+
           #Have we moved past the final space the space array?
 #          space_array_end_flag = false
           #Map the first match of this config on the space array
-          config.rows.times do #unless space_array_end_flag
-            config.columns.times do #unless space_array_end_flag
+          config[:rows].times do #unless space_array_end_flag
+            config[:columns].times do #unless space_array_end_flag
               #              if config_index <= @COLUMNS
-              cell_space_map[space_index] = c.config[config_index]
+#              binding.pry
+              cell_space_map[space_index] = config[:config][config_index]
               config_index += 1
               space_index += 1
               #             end
@@ -52,19 +58,23 @@ module Tetrominoer
             space_index += @COLUMNS - space_index
           end
           #We will return this as all the possible spaces of a config
-          config_possibilities = Array.new(0)
+          config_possibilities = Array.new(0,0)
           #An index of our possibilities
           config_possibilities_index = 0
           #Our first map is a possibility
           #Our currently testing possibility, 
           possibility = cell_space_map
+          #When a piece of the block has fallen off the end of the board, throw it away and terminate the loop.
           until possibility.count(1) < 4
-            config_possibilities[cell_possibilities_index] = possibilty
+            config_possibilities[config_possibilities_index] = possibility.dup
+
             #Shift the block forward across the space_array
-            possibilty.pop
-            possibilty.unshift(0)
+            possibility.pop
+            possibility.unshift(0)
             config_possibilities_index += 1            
           end
+          #Add the generated possibilties of this config to the total possibilities for the block
+          block_possibilities += config_possibilities
           binding.pry
         end
       end

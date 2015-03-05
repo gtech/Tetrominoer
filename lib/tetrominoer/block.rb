@@ -13,12 +13,11 @@ module Tetrominoer
     def initialize
       @PERMUTATIONS = 1
       @CONFIGS = 
-        {1=>
-        {
+        [{
           rows: 2,
           columns: 2,
           config: [1,1,1,1]
-        }}
+         }]
 
       # permutations=> 1
       #                        rows=> 2
@@ -36,16 +35,31 @@ module Tetrominoer
     def initialize
       @PERMUTATIONS = 4
       @CONFIGS = 
-        {1=>
-        {
+        [{
           rows: 3,
           columns: 2,
           config: [0,1,0,1,1,1]
+        },
+         {
+          rows: 2,
+          columns: 3,
+          config: [1,0,0,1,1,1]
+        },
+         {
+          rows: 3,
+          columns: 2,
+          config: [1,1,1,0,1,0]
+        },
+         {
+          rows: 2,
+          columns: 3,
+          config: [1,1,1,0,0,1]
         }
-      }
+        ]
+
       
 
-      # @CONFIGS = { 1=>[[0,1],
+      # @CONFIGS = { 1=>       [[0,1],
       #                         [0,1],
       #                         [1,1]],
 

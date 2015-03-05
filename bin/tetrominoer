@@ -7,9 +7,11 @@ module Tetrominoer
 
   o = O.new()
   l = L.new()
-  binding.pry
+  a = [o]
+  pg = PossibilityGenerator.new(3,3)
+  pg.generate(a)
 
-
+binding.pry
 
 end
 #  l = PieceMatrixGenerator.new(5)
