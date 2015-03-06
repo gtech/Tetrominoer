@@ -9,8 +9,15 @@ module Tetrominoer
     end
     
     def solve(possibility_space, solution_candidate = Array.new, solutions = Array.new)
-      possibility = possibility_space[0]
+      if possibility_space.empty?
+#        binding.pry
+        return false
+      end
+    
+      possibility = possibility_space[0].dup
       possibility_space.delete_at(0)
+      possibility_space2 = possibility_space.dup
+    
       original_solution_candidate = solution_candidate.dup
       solution_candidate.push(possibility)
       repeat_space = false
@@ -31,19 +38,27 @@ module Tetrominoer
       #If there are no doubly occupied spaces, add the block placement
         #to the solution, check to see if all spaces are filled.
       if repeat_space
-        return solve(possibility_space, original_solution_candidate)
-      end
-
-      if solution_candidate.length == @spaces/4 #TODO magic number for block size
-        binding.pry
+        if sol1 =  solve(possibility_space, original_solution_candidate, solutions) and  not sol1.empty?
+#          solutions.push(sol1)
+          solutions += sol1
+          binding.pry
+        end
+      elsif solution_candidate.length == @spaces/4 #TODO magic number for block size
+#       binding.pry
         return solutions.push(solution_candidate)
+ #       return solutions += solution_candidate
+      else
+        if sol1 = solve(possibility_space, solution_candidate, solutions) and  not sol1.empty?
+#          solutions.push(sol1)
+          solutions += sol1
+        end
+        if sol2 = solve(possibility_space2, original_solution_candidate, solutions) and not sol2.empty?
+          solutions += sol2
+#          solutions.push(sol2)
+        end
       end
-      #TODO Why the fuck doesn't it get here?
-      if possibility_space.empty?
-        binding.pry
-        return false
-      end
-      return solve(possibility_space, solution_candidate)
+        
+      return solutions
     end
   end #End of Solver
 end #End of module

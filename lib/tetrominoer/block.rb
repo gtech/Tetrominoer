@@ -3,7 +3,7 @@ module Tetrominoer
   #Major class for creating blocks, every block has these features.
   class Block
     @CONFIGS = Hash.new()
-    attr_reader :CONFIGS, :PERMUTATIONS, :NAME
+    attr_reader :CONFIGS, :NAME
 
     def initialize
       @NAME = self.class.to_s.split("::")[1]

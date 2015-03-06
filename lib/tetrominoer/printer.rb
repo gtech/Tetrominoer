@@ -2,15 +2,14 @@ module Tetrominoer
 
   
   class Printer
-
-    
-    def initialize(solution,block_array, rows, columns)
+    def initialize(rows, columns)
+      @rows = rows
+      @columns = columns
       @board_matrix = Array.new(rows){Array.new(columns)}
-      generate_board(solution, block_array, rows, columns)
     end
 
 
-    def generate_board(solution, block_array, rows, columns)
+    def generate_board(solution, block_array)
       blocks_number = block_array.length
 
       solution.each_with_index do |sol_row, sol_index|
@@ -22,12 +21,12 @@ module Tetrominoer
         occupied_spaces = sol_row[blocks_number..-1]
         while space_index
           if space_index = occupied_spaces.index(1)
-            row = space_index/columns
-            column = space_index%columns
-       #     begin
-              @board_matrix[row][column] = block_name
-        #    rescue => e
-         #   end
+            row = space_index/@columns
+            column = space_index%@columns
+            #     begin
+            @board_matrix[row][column] = block_name
+            #    rescue => e
+            #   end
             occupied_spaces[space_index] = 0
           end
         end
@@ -35,7 +34,8 @@ module Tetrominoer
       return true
     end
 
-    def print
+    def print(solution, block_array)
+      generate_board(solution, block_array)
       @board_matrix.each do |row|
         puts row.join
       end
