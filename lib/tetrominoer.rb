@@ -4,7 +4,8 @@ require 'matrix'
 require 'pry'
 require 'tetrominoer/block'
 require 'tetrominoer/possibility_generator'
-
+require 'tetrominoer/solver'
+require 'tetrominoer/printer'
 
 # Enumerate all possible position matrices for each piece type
 # create aray with all 9 pieces

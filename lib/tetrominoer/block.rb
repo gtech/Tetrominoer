@@ -4,13 +4,18 @@ module Tetrominoer
   class Block
     @CONFIGS = Hash.new()
     @PERMUTATIONS = Integer
-    attr_reader :CONFIGS, :PERMUTATIONS
+    attr_reader :CONFIGS, :PERMUTATIONS, :NAME
+
+    def initialize
+      @NAME = self.class.to_s.split("::")[1]
+    end
   end
+  
 
 
-  #2 by 2 block
   class O < Block
     def initialize
+      super
       @PERMUTATIONS = 1
       @CONFIGS = 
         [{
@@ -18,21 +23,12 @@ module Tetrominoer
           columns: 2,
           config: [1,1,1,1]
          }]
-
-      # permutations=> 1
-      #                        rows=> 2
-      #                        columns=> 2
-      
-
-      #                        1=>[[1,1],
-      #                            [1,1]]
-      #                       }
-      #     @CONFIGS = [1,1,1,1]
     end
   end
 
   class L < Block
     def initialize
+      super
       @PERMUTATIONS = 4
       @CONFIGS = 
         [{
@@ -61,6 +57,7 @@ module Tetrominoer
 
   class R < Block
     def initialize
+      super
       @CONFIGS = 
         [{
           rows: 3,              #1 
@@ -88,6 +85,7 @@ module Tetrominoer
 
   class I < Block
     def initialize
+      super
       @CONFIGS =
         [{
           rows: 1,  
@@ -105,6 +103,7 @@ module Tetrominoer
 
   class S < Block
     def initialize
+      super
       @CONFIGS =
         [{
           rows: 2,  
@@ -122,6 +121,7 @@ module Tetrominoer
 
   class Z < Block
     def initialize
+      super
       @CONFIGS =
         [{
           rows: 2,  
