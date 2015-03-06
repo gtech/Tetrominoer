@@ -72,7 +72,7 @@ module Tetrominoer
           #Our currently testing possibility, 
           possibility = cell_space_map
           #When a piece of the block has fallen off the end of the board, throw it away and terminate the loop.
-          until possibility.count(1) < 4
+          until possibility.count(1) < 4 #TODO magic number
             config_possibilities[config_possibilities_index] = possibility.dup
             #Shift the block forward across the space_array
             possibility.pop

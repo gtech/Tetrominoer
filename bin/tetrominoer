@@ -13,15 +13,18 @@ module Tetrominoer
   z = Z.new()
 
   block_array = [o,l,r] #[o,l,r,i,s,z]
-  rows = 6
+  rows = 4
   columns = 3
+  
   pg = PossibilityGenerator.new(rows,columns)
   pg.generate(block_array)
 
-  solution = Solver.solve(pg.possibility_space, block_array.length)
-  if solution
-    printer = Printer.new(solution, block_array, rows, columns)
-  printer.print
+  solver = Solver.new(pg.possibility_space, block_array.length)
+  solutions = solver.solve(pg.possibility_space)
+
+  if solutions
+    printer = Printer.new(solutions[0], block_array, rows, columns)
+    printer.print
   else
     puts "Unsolvable"
   end

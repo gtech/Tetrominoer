@@ -3,7 +3,6 @@ module Tetrominoer
   #Major class for creating blocks, every block has these features.
   class Block
     @CONFIGS = Hash.new()
-    @PERMUTATIONS = Integer
     attr_reader :CONFIGS, :PERMUTATIONS, :NAME
 
     def initialize
@@ -16,7 +15,6 @@ module Tetrominoer
   class O < Block
     def initialize
       super
-      @PERMUTATIONS = 1
       @CONFIGS = 
         [{
           rows: 2,
@@ -29,7 +27,6 @@ module Tetrominoer
   class L < Block
     def initialize
       super
-      @PERMUTATIONS = 4
       @CONFIGS = 
         [{
           rows: 3,             #01

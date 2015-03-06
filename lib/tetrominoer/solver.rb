@@ -1,50 +1,49 @@
 module Tetrominoer
   class Solver
     #PARAMS: possibility_space<Array<Array>>, block_number<INT>
-    def self.solve(possibility_space,block_number)
-      solved = false
-      possibility_index = 0
-      possibility_size = possibility_space[0].length
-      spaces = possibility_size - block_number
-      solution = Array.new
-      solution_index = 0
-      while solved == false
-        #Let's add the next possibility temporarily to the solution
-        solution[solution_index] = possibility_space[possibility_index]
-        #Only check the spaces, not the block identifier columns
-        column_index = block_number
-        repeat_space = false
-        while column_index < possibility_size and not repeat_space
-          #Look through every column the potential solution,
-          #If there is a space occupied by two blocks, exit
-          begin
-            repeat = solution.select{|row| row[column_index] == 1}
+    def initialize(possibility_space,block_number)
+      @possibility_size = possibility_space[0].length
+      @number_of_possibilities = possibility_space.length
+      @block_number = block_number
+      @spaces = @possibility_size - @block_number
+    end
+    
+    def solve(possibility_space, solution_candidate = Array.new, solutions = Array.new)
+      possibility = possibility_space[0]
+      possibility_space.delete_at(0)
+      original_solution_candidate = solution_candidate.dup
+      solution_candidate.push(possibility)
+      repeat_space = false
+      column_index = @block_number
+      while column_index < @possibility_size and not repeat_space
+      begin
+        repeat = solution_candidate.select{|row| row[column_index] == 1}
+  
+        if repeat.length > 1 
+          repeat_space = true
+        end
           rescue => e
-              binding.pry
-          end
-
-          if repeat.length > 1 
-            repeat_space = true
-          end
-          column_index += 1
+          binding.pry
         end
-        #If there are no doubly occupied spaces, add the block placement
+
+        column_index += 1
+      end
+      #If there are no doubly occupied spaces, add the block placement
         #to the solution, check to see if all spaces are filled.
-        if not repeat_space
-          solution_index += 1
-          if solution_index == spaces/4
-            solved = true
-          end
-        end
-        possibility_index += 1
-      end #End of solve loop
+      if repeat_space
+        return solve(possibility_space, original_solution_candidate)
+      end
 
-      #TODO will return bogus solutions
-      if solved
-        return solution
-      else
+      if solution_candidate.length == @spaces/4 #TODO magic number for block size
+        binding.pry
+        return solutions.push(solution_candidate)
+      end
+      #TODO Why the fuck doesn't it get here?
+      if possibility_space.empty?
+        binding.pry
         return false
       end
-    end #End of solve method
+      return solve(possibility_space, solution_candidate)
+    end
   end #End of Solver
 end #End of module
