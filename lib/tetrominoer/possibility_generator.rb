@@ -3,16 +3,16 @@ module Tetrominoer
   class PossibilityGenerator
     #@possibility_space = Array.new(0,0)
 
-    def initialize(x_size, y_size)
-      @ROWS = y_size
-      @COLUMNS = x_size
+    def initialize(rows, columns)
+      @ROWS = rows
+      @COLUMNS = columns
 
       #Define our posibility space with the user given x and y sizes 
       #as a multidimensional array, initialized to 0
-      @possibility_space = Array.new(x_size) {Array.new(y_size){0}}
+      @possibility_space = Array.new(@ROWS) {Array.new(@COLUMNS){0}}
       
       #A column for every cell in the puzzle space
-      @cell_space = Array.new(x_size*y_size,0)
+      @cell_space = Array.new(@ROWS*@COLUMNS,0)
     end
 
     #INPUT array of the blocks to be used
@@ -42,6 +42,8 @@ module Tetrominoer
           space_index = 0
           #the index of the config array
           config_index = 0
+          puts config[:config]
+#          binding.pry
 
           #Have we moved past the final space the space array?
 #          space_array_end_flag = false
@@ -49,34 +51,54 @@ module Tetrominoer
           config[:rows].times do #unless space_array_end_flag
             config[:columns].times do #unless space_array_end_flag
               #              if config_index <= @COLUMNS
-#              binding.pry
+ #             binding.pry
               cell_space_map[space_index] = config[:config][config_index]
               config_index += 1
               space_index += 1
-              #             end
+              if space_index % @COLUMNS 
+              end
             end
-            space_index += @COLUMNS - space_index
+            #Move to the next row of the cell_space_map if we are going to the next row of the config
+            if space_index % @COLUMNS > 0
+              space_index += @COLUMNS - (space_index % @COLUMNS)
+            end
           end
           #We will return this as all the possible spaces of a config
           config_possibilities = Array.new(0,0)
           #An index of our possibilities
           config_possibilities_index = 0
+          #The index of the first piece of the config
+          index_of_first_piece = 0
           #Our first map is a possibility
           #Our currently testing possibility, 
           possibility = cell_space_map
           #When a piece of the block has fallen off the end of the board, throw it away and terminate the loop.
           until possibility.count(1) < 4
             config_possibilities[config_possibilities_index] = possibility.dup
-
             #Shift the block forward across the space_array
             possibility.pop
             possibility.unshift(0)
+            index_of_first_piece += 1
+
+            #Check to see if the block is split across the right boarder of the space_map
+            #Wastefull of 2-3 loops because we'll pop the number of columns off 
+            #when we hit the end of the cell_space_map
+            column_number = 1
+            while column_number < config[:columns]
+              if (index_of_first_piece + config[:columns]) % @COLUMNS == column_number
+                possibility.pop
+                possibility.unshift(0)
+                index_of_first_piece += 1
+              end
+              column_number +=1
+            end
+
             config_possibilities_index += 1            
           end
           #Add the generated possibilties of this config to the total possibilities for the block
           block_possibilities += config_possibilities
-          binding.pry
         end
+        binding.pry
       end
     end
 

@@ -7,8 +7,12 @@ module Tetrominoer
 
   o = O.new()
   l = L.new()
-  a = [o]
-  pg = PossibilityGenerator.new(3,3)
+  r = R.new()
+  i = I.new()
+  s = S.new()
+  z = Z.new()
+  a = [i]
+  pg = PossibilityGenerator.new(4,3)
   pg.generate(a)
 
 binding.pry
