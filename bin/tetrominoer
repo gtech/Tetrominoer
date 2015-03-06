@@ -11,13 +11,10 @@ module Tetrominoer
   i = I.new()
   s = S.new()
   z = Z.new()
-  a = [i]
-  pg = PossibilityGenerator.new(4,3)
+  a = [o,l,r,i,s,z]
+  pg = PossibilityGenerator.new(10,10)
   pg.generate(a)
 
 binding.pry
 
 end
-#  l = PieceMatrixGenerator.new(5)
-
- # l.generate
