@@ -41,6 +41,31 @@ require 'tetrominoer/printer'
 
 module Tetrominoer
 
+ 
+    # def delete_at(o)
+     #  if o.class == Array
+      #   o.sort!
+       #  shift = 0
+        # for i in o
+    #       o.delete_at(i-shift)
+    #       shift += 1
+    #     end
+    #   else
+    #     delete_at(o)
+    #   end
+    # end
+
+    def delete_arr(row,index_arr)
+        index_arr.sort!
+        shift = 0
+        for i in o
+          row.delete_at(i-shift)
+          shift += 1
+        end
+    end
+
+
+
   class Runner
 
     def initialize(options)

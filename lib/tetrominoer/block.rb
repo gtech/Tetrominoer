@@ -133,4 +133,34 @@ module Tetrominoer
         ]
     end
   end
+
+  class T < Block
+    def initialize
+      super
+      @CONFIGS = 
+        [{
+          rows: 3,              #1 
+          columns: 2,           #11
+          config: [1,0,1,1,1,0] #1
+         },
+         {
+          rows: 2,              #111
+          columns: 3,           # 1
+          config: [1,1,1,0,1,0] 
+         },
+         {
+          rows: 3,              # 1
+          columns: 2,           #11
+          config: [0,1,1,1,0,1] # 1
+         },
+         {
+          rows: 2,              # 1
+          columns: 3,           #111
+          config: [0,1,0,1,1,1]
+        }
+        ]
+
+    end
+  end
+
 end

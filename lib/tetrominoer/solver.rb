@@ -6,13 +6,18 @@ module Tetrominoer
       @number_of_possibilities = possibility_space.length
       @block_number = block_number
       @spaces = @possibility_size - @block_number
+      @solutions = Array.new
+      @counter = 0
+      @possibility_space = possibility_space
     end
     
-    def solve(possibility_space, solution_candidate = Array.new, solutions = Array.new)
-      if possibility_space.empty?
-        return false
+    def solve(possibility_space, solution_candidate = Array.new)
+      if possibility_space.empty? or @counter == 1
+        @counter -= 1
+        return @solutions
       end
-    
+      @counter -= 1
+      
       possibility = possibility_space[0]
       possibility_space.delete_at(0)
       possibility_space2 = possibility_space.dup
@@ -38,16 +43,137 @@ module Tetrominoer
       #If there are no doubly occupied spaces, add the block placement
         #to the solution, check to see if all spaces are filled.
       if repeat_space
-        solve(possibility_space, original_solution_candidate, solutions)
+        solve(possibility_space, original_solution_candidate)
       elsif solution_candidate.length == @spaces/4 #TODO magic number for block size
-        solutions.push(solution_candidate)
+        @solutions.push(solution_candidate)
+        @counter = 1
         return 
       else
-        solve(possibility_space, solution_candidate, solutions)
-        solve(possibility_space2, original_solution_candidate, solutions)
+        solve(possibility_space, solution_candidate)
+        solve(possibility_space2, original_solution_candidate)
       end
 
-      return solutions
+      return @solutions
     end
+
+    def solve_two(possibility_space, solution_candidate = Hash.new)
+      binding.pry
+      if possibility_space.empty?
+        if solution_candidate.length == @spaces/4
+#          binding.pry
+          @solutions.push(solution_candidate)
+          return @solutions
+        else
+          return
+        end
+      end
+      for column in @block_number..@possibility_size-1
+        empty = possibility_space.select{ |k,v| v[column] == 1 }
+        binding.pry
+       if empty.empty?
+        return
+     end
+        possibility_space.each do |p_candidate_key, possibility|
+          if possibility[column] == 0
+  #        binding.pry
+            next
+          end
+
+
+          s_candidate =deep_copy(solution_candidate)
+
+          s_candidate[p_candidate_key] = possibility
+
+          possibility_spaces = possibility[@block_number..-1]
+
+          pspace = deep_copy(possibility_space)
+          pspace.delete(p_candidate_key)
+          #for j such that A[r,j] == 1, delete column j from matrix A
+          occupied_spaces = Array.new
+
+          possibility_spaces.each_with_index do |space, space_index|
+            if space == 1
+              occupied_spaces << space_index
+            end
+          end
+
+          #Control for the block identifier row
+          occupied_spaces.map!{ |index| index + @block_number }
+          
+
+          #TODO Could be faster
+          #delete rows which overlap with the chosen row
+          pspace.each do |p_key, p|
+            flag = false
+            occupied_spaces.each do |space| 
+              if p[space] == 1
+                flag = true
+              end
+            end
+            if flag
+              pspace.delete(p_key)
+            end
+          end
+
+
+          #delete the occupied columns in every row
+          pspace.each do |key, row|
+
+            delete_arr(row,occupied_spaces)
+
+          end
+          binding.pry
+          solve_two(pspace,s_candidate)
+          
+        end
+      end
+
+      return @solutions
+    end #end of solve two
+
+    def deep_copy(o)
+      Marshal.load(Marshal.dump(o))
+    end
+
+    def delete_arr(row,index_arr)
+        index_arr.sort!
+        shift = 0
+        for i in index_arr
+          row.delete_at(i-shift)
+          shift += 1
+        end
+    end
+
+
+
+
+
   end #End of Solver
+   # class Array
+   #   def values_at_a(array)
+   #     a = []
+   #     array.each{ |number| a += self.values_at(number)}
+   #     return a
+   #   end
+   # end
+
+
 end #End of module
+
+
+
+
+# n>>p
+#of rows
+#choose index (1)
+#check every row at index to find which ones occupy that space (n)
+#for each of those find all occupied spaces of that piece (p)
+#Find all rows which also occupy that space and delete them (n)
+#For those for spaces, delete that index from every row (n)
+#
+#of columns
+#find all rows which have one there, (n)
+#for each row find which columns are occupied by that piece (p)
+#for each row which also occupy those columns, delete that index (n)
+#delete those columns (4)
+#

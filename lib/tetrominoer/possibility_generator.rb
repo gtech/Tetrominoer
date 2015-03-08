@@ -106,6 +106,18 @@ module Tetrominoer
       end #End of block possibilities loop
       return true
     end
+
+    def generate_two(block_array)
+      generate(block_array)
+      possibility_hash = Hash.new
+      for possibility_index in 0..(@possibility_space.length-1)
+        possibility_hash[possibility_index] = possibility_space[possibility_index]
+      end
+      @possibility_space = possibility_hash
+      return true
+    end
+
+
   end
 end
 

@@ -11,26 +11,32 @@ module Tetrominoer
   i = I.new()
   s = S.new()
   z = Z.new()
+  t = T.new()
 
-  block_array = [o,l,r,i,s,z] #[o,l,r,i,s,z]
+  block_array = [l,r,i,o] #[o,l,r,i,s,z]
+ # block_array = [s,z,r,l,o,i] #[o,l,r,i,s,z]
+  #block_array = [s,z,r,l,o,i] #[o,l,r,i,s,z]
+ # block_array = [s,z,r,l,o,i] #[o,l,r,i,s,z]
   rows = 4
-  columns = 5
+  columns = 3
   
   pg = PossibilityGenerator.new(rows,columns)
-  pg.generate(block_array)
+  pg.generate_two(block_array)
+  possibilities = pg.possibility_space
 
-  solver = Solver.new(pg.possibility_space, block_array.length)
-  solutions = solver.solve(pg.possibility_space)
-#  binding.pry
-  # if solutions
-  #   printer = Printer.new(rows, columns)
-  #   solutions.each do |solution| 
-  #     puts ''
-  #   printer.print(solution, block_array)
-  #     puts ''
-  #   end
-  # else
-  #   puts "Unsolvable"
-  # end
+  solver = Solver.new(possibilities, block_array.length)
+  solutions = solver.solve_two(possibilities)
+  binding.pry
+  if solutions
+    printer = Printer.new(rows, columns)
+    solutions.each do |solution| 
+      puts ''
+    printer.print(solution, block_array)
+      puts ''
+    end
+    puts solutions.length
+  else
+    puts "Unsolvable"
+  end
 
 end
