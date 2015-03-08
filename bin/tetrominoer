@@ -12,9 +12,9 @@ module Tetrominoer
   s = S.new()
   z = Z.new()
 
-  block_array = [o,l,r,i] #[o,l,r,i,s,z]
+  block_array = [o,l,r,i,s,z] #[o,l,r,i,s,z]
   rows = 4
-  columns = 3
+  columns = 5
   
   pg = PossibilityGenerator.new(rows,columns)
   pg.generate(block_array)
@@ -22,14 +22,15 @@ module Tetrominoer
   solver = Solver.new(pg.possibility_space, block_array.length)
   solutions = solver.solve(pg.possibility_space)
 #  binding.pry
-  if solutions
-    printer = Printer.new(rows, columns)
-    solutions.each do |solution| 
-    printer.print(solution, block_array)
-    end
-  else
-    puts "Unsolvable"
-  end
-binding.pry
+  # if solutions
+  #   printer = Printer.new(rows, columns)
+  #   solutions.each do |solution| 
+  #     puts ''
+  #   printer.print(solution, block_array)
+  #     puts ''
+  #   end
+  # else
+  #   puts "Unsolvable"
+  # end
 
 end

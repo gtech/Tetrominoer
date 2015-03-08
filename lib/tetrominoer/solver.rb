@@ -10,11 +10,10 @@ module Tetrominoer
     
     def solve(possibility_space, solution_candidate = Array.new, solutions = Array.new)
       if possibility_space.empty?
-#        binding.pry
         return false
       end
     
-      possibility = possibility_space[0].dup
+      possibility = possibility_space[0]
       possibility_space.delete_at(0)
       possibility_space2 = possibility_space.dup
     
@@ -30,7 +29,8 @@ module Tetrominoer
           repeat_space = true
         end
           rescue => e
-          binding.pry
+            puts e.backtrace
+            binding.pry
         end
 
         column_index += 1
@@ -38,26 +38,15 @@ module Tetrominoer
       #If there are no doubly occupied spaces, add the block placement
         #to the solution, check to see if all spaces are filled.
       if repeat_space
-        if sol1 =  solve(possibility_space, original_solution_candidate, solutions) and  not sol1.empty?
-#          solutions.push(sol1)
-          solutions += sol1
-          binding.pry
-        end
+        solve(possibility_space, original_solution_candidate, solutions)
       elsif solution_candidate.length == @spaces/4 #TODO magic number for block size
-#       binding.pry
-        return solutions.push(solution_candidate)
- #       return solutions += solution_candidate
+        solutions.push(solution_candidate)
+        return 
       else
-        if sol1 = solve(possibility_space, solution_candidate, solutions) and  not sol1.empty?
-#          solutions.push(sol1)
-          solutions += sol1
-        end
-        if sol2 = solve(possibility_space2, original_solution_candidate, solutions) and not sol2.empty?
-          solutions += sol2
-#          solutions.push(sol2)
-        end
+        solve(possibility_space, solution_candidate, solutions)
+        solve(possibility_space2, original_solution_candidate, solutions)
       end
-        
+
       return solutions
     end
   end #End of Solver
