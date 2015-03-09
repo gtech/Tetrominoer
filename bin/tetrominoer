@@ -29,18 +29,31 @@ module Tetrominoer
   z = Z.new()
   t = T.new()
 
-  choices =     [2,1,2,1]
-  block_array = [t,r,l,z]
 
-  rows = 6
-  columns = 4
+#-----------Configuration----------------------------------
+
+  #Edit these if you want to narrow the number of possible pieces for a solution
+  #Block array lets you chose which blocks you want avaibiale
+  #Choices gives you the maximum number of the corresponding block in its index
+  block_array = [o,l,r,i,s,z,t]
+# choices =     [2,1,2,1]
+# block_array = [t,r,l,z]
+
+  #This is the size of the board you are putting your tetrominos on
+  rows = 4
+  columns = 3
+
+  #Set to false if you don't want to be shown solutions until all have been found
+  quickprint = true
   
+#-------------End of Configuration-------------------------
+
   pg = PossibilityGenerator.new(rows,columns)
   pg.generate(block_array)
   possibilities = pg.possibility_space
 
 #  solver = Solver.new(possibilities, block_array)
-  solver = Solver.new(possibilities, block_array, rows, columns, choices, true)
+  solver = Solver.new(possibilities, block_array, rows, columns, choices, quickprint)
   solutions = solver.solve(possibilities)
 
   if solutions
@@ -51,7 +64,7 @@ module Tetrominoer
       printer.print(output, block_array)
       puts ''
     end
-    puts solutions.length
+    puts "Number of solutions: " + solutions.length
   else
     puts "Unsolvable"
   end
