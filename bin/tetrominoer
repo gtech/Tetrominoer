@@ -13,25 +13,38 @@ module Tetrominoer
   z = Z.new()
   t = T.new()
 
-  block_array = [l,r,i,o] #[o,l,r,i,s,z]
+#  block_array = [l,r,i,o,s,z] #[o,l,r,i,s,z]
+#  choices = [1,1,1]
+#  block_array = [l,r,o]
+      choices = [1,2,2]
+  block_array = [i,o,l]
  # block_array = [s,z,r,l,o,i] #[o,l,r,i,s,z]
-  #block_array = [s,z,r,l,o,i] #[o,l,r,i,s,z]
- # block_array = [s,z,r,l,o,i] #[o,l,r,i,s,z]
-  rows = 4
-  columns = 3
+  rows = 5
+  columns = 4
   
   pg = PossibilityGenerator.new(rows,columns)
   pg.generate_two(block_array)
+#  refined_choices = pg.refine_choices(block_array, choices)
   possibilities = pg.possibility_space
 
-  solver = Solver.new(possibilities, block_array.length)
+#  solver = Solver.new(possibilities, block_array.length)
+  solver = Solver.new(possibilities, block_array, rows, columns, choices)
   solutions = solver.solve_two(possibilities)
-  binding.pry
+  puts solutions.length
+
+  # yaml_file = "data/solutions.yml"
+
+  
+  # file = File.open(yaml_file, 'w')
+  # YAML.dump(solutions, file)
+  # file.close
+
   if solutions
     printer = Printer.new(rows, columns)
     solutions.each do |solution| 
       puts ''
-    printer.print(solution, block_array)
+      output = printer.convert_solution(solution, possibilities)
+    printer.print(output, block_array)
       puts ''
     end
     puts solutions.length

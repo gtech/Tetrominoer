@@ -2,10 +2,13 @@
 
 require 'matrix'
 require 'pry'
+require 'yaml'
+require 'colorize'
 require 'tetrominoer/block'
 require 'tetrominoer/possibility_generator'
 require 'tetrominoer/solver'
 require 'tetrominoer/printer'
+
 
 # Enumerate all possible position matrices for each piece type
 # create aray with all 9 pieces
@@ -54,17 +57,6 @@ module Tetrominoer
     #     delete_at(o)
     #   end
     # end
-
-    def delete_arr(row,index_arr)
-        index_arr.sort!
-        shift = 0
-        for i in o
-          row.delete_at(i-shift)
-          shift += 1
-        end
-    end
-
-
 
   class Runner
 

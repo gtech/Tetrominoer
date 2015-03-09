@@ -1,14 +1,17 @@
 module Tetrominoer
   class Solver
     #PARAMS: possibility_space<Array<Array>>, block_number<INT>
-    def initialize(possibility_space,block_number)
+    def initialize(possibility_space, block_array, rows = nil, columns = nil, choices = nil)
       @possibility_size = possibility_space[0].length
       @number_of_possibilities = possibility_space.length
-      @block_number = block_number
+      @block_number = block_array.length
       @spaces = @possibility_size - @block_number
       @solutions = Array.new
       @counter = 0
       @possibility_space = possibility_space
+      @choices = choices
+      @printer = Printer.new(rows,columns)
+      @block_array = block_array
     end
     
     def solve(possibility_space, solution_candidate = Array.new)
@@ -56,78 +59,95 @@ module Tetrominoer
       return @solutions
     end
 
-    def solve_two(possibility_space, solution_candidate = Hash.new)
-      binding.pry
+    def solve_two(possibility_space, solution_candidate = Array.new)
+#      binding.pry
+      if @choices and solution_candidate.length > 0
+        @choices.each_with_index do |choice, index|
+          block_count = 0
+
+          solution_candidate.each do |candidate| 
+           if @possibility_space[candidate][index] == 1
+             block_count += 1
+           end
+
+        if block_count > choice
+
+          return
+        end
+        end
+        end
+      end
+
       if possibility_space.empty?
         if solution_candidate.length == @spaces/4
 #          binding.pry
+#          puts solution_candidate
           @solutions.push(solution_candidate)
+          if @choices
+            output = @printer.convert_solution(solution_candidate, @possibility_space)
+            @printer.print(output, @block_array)
+            puts ''
+          end
           return @solutions
         else
           return
         end
       end
-      for column in @block_number..@possibility_size-1
-        empty = possibility_space.select{ |k,v| v[column] == 1 }
-        binding.pry
-       if empty.empty?
+
+
+
+
+      
+      column = @block_number
+      empty = possibility_space.select{ |k,v| v[column] == 1 }
+      #     binding.pry
+      if empty.empty?
         return
-     end
-        possibility_space.each do |p_candidate_key, possibility|
-          if possibility[column] == 0
-  #        binding.pry
-            next
-          end
-
-
-          s_candidate =deep_copy(solution_candidate)
-
-          s_candidate[p_candidate_key] = possibility
-
-          possibility_spaces = possibility[@block_number..-1]
-
-          pspace = deep_copy(possibility_space)
-          pspace.delete(p_candidate_key)
-          #for j such that A[r,j] == 1, delete column j from matrix A
-          occupied_spaces = Array.new
-
-          possibility_spaces.each_with_index do |space, space_index|
-            if space == 1
-              occupied_spaces << space_index
-            end
-          end
-
-          #Control for the block identifier row
-          occupied_spaces.map!{ |index| index + @block_number }
-          
-
-          #TODO Could be faster
-          #delete rows which overlap with the chosen row
-          pspace.each do |p_key, p|
-            flag = false
-            occupied_spaces.each do |space| 
-              if p[space] == 1
-                flag = true
-              end
-            end
-            if flag
-              pspace.delete(p_key)
-            end
-          end
-
-
-          #delete the occupied columns in every row
-          pspace.each do |key, row|
-
-            delete_arr(row,occupied_spaces)
-
-          end
-          binding.pry
-          solve_two(pspace,s_candidate)
-          
-        end
       end
+      possibility_space.each do |p_candidate_key, possibility|
+        if possibility[column] == 0
+          next
+        end
+        s_candidate = solution_candidate.dup
 
+        s_candidate << p_candidate_key
+
+        possibility_spaces = possibility[@block_number..-1]
+
+        pspace = deep_copy(possibility_space)
+        pspace.delete(p_candidate_key)
+        #for j such that A[r,j] == 1, delete column j from matrix A
+        occupied_spaces = Array.new
+
+        possibility_spaces.each_with_index do |space, space_index|
+          if space == 1
+            occupied_spaces << space_index
+          end
+        end
+        #Control for the block identifier row
+        occupied_spaces.map!{ |index| index + @block_number }
+
+        #TODO Could be faster
+        #delete rows which overlap with the chosen row
+        pspace.each do |p_key, p|
+          flag = false
+          occupied_spaces.each do |space| 
+            if p[space] == 1
+              flag = true
+            end
+          end
+          if flag
+            pspace.delete(p_key)
+          end
+        end
+
+        #delete the occupied columns in every row
+        pspace.each do |key, row|
+          delete_arr(row,occupied_spaces)
+        end
+#        binding.pry
+        solve_two(pspace,s_candidate)
+       end
       return @solutions
     end #end of solve two
 

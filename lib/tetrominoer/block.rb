@@ -14,7 +14,7 @@ module Tetrominoer
 
   class O < Block
     def initialize
-      super
+      @NAME = self.class.to_s.split("::")[1].cyan
       @CONFIGS = 
         [{
           rows: 2,
@@ -26,7 +26,7 @@ module Tetrominoer
 
   class L < Block
     def initialize
-      super
+      @NAME = self.class.to_s.split("::")[1].magenta
       @CONFIGS = 
         [{
           rows: 3,             #01
@@ -54,7 +54,8 @@ module Tetrominoer
 
   class R < Block
     def initialize
-      super
+
+      @NAME = self.class.to_s.split("::")[1].yellow
       @CONFIGS = 
         [{
           rows: 3,              #1 
@@ -82,7 +83,8 @@ module Tetrominoer
 
   class I < Block
     def initialize
-      super
+
+      @NAME = self.class.to_s.split("::")[1].green
       @CONFIGS =
         [{
           rows: 1,  
@@ -100,7 +102,8 @@ module Tetrominoer
 
   class S < Block
     def initialize
-      super
+
+      @NAME = self.class.to_s.split("::")[1].red
       @CONFIGS =
         [{
           rows: 2,  
@@ -119,6 +122,7 @@ module Tetrominoer
   class Z < Block
     def initialize
       super
+      @NAME = self.class.to_s.split("::")[1]
       @CONFIGS =
         [{
           rows: 2,  
@@ -136,7 +140,8 @@ module Tetrominoer
 
   class T < Block
     def initialize
-      super
+
+      @NAME = self.class.to_s.split("::")[1].blue
       @CONFIGS = 
         [{
           rows: 3,              #1 

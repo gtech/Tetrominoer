@@ -40,6 +40,19 @@ module Tetrominoer
         puts row.join
       end
     end
+
+    def print_two(solution, block_array)
+      
+    end
+
+    def convert_solution(solution, possibilities)
+      output = Array.new
+      solution.each do |s_key| 
+#        binding.pry
+        output << possibilities[s_key]
+      end
+      return output
+    end
     
   end
 end
