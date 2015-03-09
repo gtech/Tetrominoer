@@ -1,19 +1,20 @@
 module Tetrominoer
 
   #Major class for creating blocks, every block has these features.
+  #Each block has its own color to print in console
+  #A block's configs are the number of rows and columns necessary to house them,
+  #And their filled spots on that alloted housing
   class Block
     @CONFIGS = Hash.new()
-    attr_reader :CONFIGS, :NAME
-
+    attr_reader :CONFIGS, :NAME, :SIZE
     def initialize
       @NAME = self.class.to_s.split("::")[1]
     end
   end
-  
-
 
   class O < Block
     def initialize
+      @SIZE = 4
       @NAME = self.class.to_s.split("::")[1].cyan
       @CONFIGS = 
         [{
@@ -26,6 +27,7 @@ module Tetrominoer
 
   class L < Block
     def initialize
+      @SIZE = 4
       @NAME = self.class.to_s.split("::")[1].magenta
       @CONFIGS = 
         [{
@@ -54,7 +56,7 @@ module Tetrominoer
 
   class R < Block
     def initialize
-
+      @SIZE = 4
       @NAME = self.class.to_s.split("::")[1].yellow
       @CONFIGS = 
         [{
@@ -83,7 +85,7 @@ module Tetrominoer
 
   class I < Block
     def initialize
-
+      @SIZE = 4
       @NAME = self.class.to_s.split("::")[1].green
       @CONFIGS =
         [{
@@ -102,7 +104,7 @@ module Tetrominoer
 
   class S < Block
     def initialize
-
+      @SIZE = 4
       @NAME = self.class.to_s.split("::")[1].red
       @CONFIGS =
         [{
@@ -121,7 +123,7 @@ module Tetrominoer
 
   class Z < Block
     def initialize
-      super
+      @SIZE = 4
       @NAME = self.class.to_s.split("::")[1]
       @CONFIGS =
         [{
@@ -140,7 +142,7 @@ module Tetrominoer
 
   class T < Block
     def initialize
-
+      @SIZE = 4
       @NAME = self.class.to_s.split("::")[1].blue
       @CONFIGS = 
         [{
@@ -167,5 +169,4 @@ module Tetrominoer
 
     end
   end
-
 end

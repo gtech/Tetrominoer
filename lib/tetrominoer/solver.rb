@@ -16,90 +16,56 @@
 
 module Tetrominoer
   class Solver
-    #PARAMS: possibility_space<Array<Array>>, block_number<INT>
-    def initialize(possibility_space, block_array, rows = nil, columns = nil, choices = nil)
+    def initialize(possibility_space, block_array, rows = nil, columns = nil, choices = nil, quick_print = nil)
       @possibility_size = possibility_space[0].length
       @number_of_possibilities = possibility_space.length
       @block_number = block_array.length
       @spaces = @possibility_size - @block_number
+      #number of blocks necessary to fill the board, assumes all blocks are the same size
+      @solution_size = (@possibility_size - @block_number)/block_array[0].SIZE
       @solutions = Array.new
-      @counter = 0
       @possibility_space = possibility_space
       @choices = choices
       @printer = Printer.new(rows,columns)
       @block_array = block_array
+      @quick_print = quick_print
     end
+
+
+
+
+    #PARAMS Hash<Array[Integer]>, Array[Integer]
+    #Takes in a list of all possible block placements, and a list of current proposed placements
+    #for a solutions. The numbers in the solution candidate are the keys of the block placements
     
+    #SUMMARY Recuring function which aims to reduce the number of possible block placements
+    # until there are no avaliable block placements to fill the current empty spaces, 
+    # or a solution is found. The method creates a search tree.
     def solve(possibility_space, solution_candidate = Array.new)
-      if possibility_space.empty? or @counter == 1
-        @counter -= 1
-        return @solutions
-      end
-      @counter -= 1
-      
-      possibility = possibility_space[0]
-      possibility_space.delete_at(0)
-      possibility_space2 = possibility_space.dup
-    
-      original_solution_candidate = solution_candidate.dup
-      solution_candidate.push(possibility)
-      repeat_space = false
-      column_index = @block_number
-      while column_index < @possibility_size and not repeat_space
-      begin
-        repeat = solution_candidate.select{|row| row[column_index] == 1}
-  
-        if repeat.length > 1 
-          repeat_space = true
-        end
-          rescue => e
-            puts e.backtrace
-            binding.pry
-        end
 
-        column_index += 1
-      end
-      #If there are no doubly occupied spaces, add the block placement
-        #to the solution, check to see if all spaces are filled.
-      if repeat_space
-        solve(possibility_space, original_solution_candidate)
-      elsif solution_candidate.length == @spaces/4 #TODO magic number for block size
-        @solutions.push(solution_candidate)
-        @counter = 1
-        return 
-      else
-        solve(possibility_space, solution_candidate)
-        solve(possibility_space2, original_solution_candidate)
-      end
-
-      return @solutions
-    end
-
-    def solve_two(possibility_space, solution_candidate = Array.new)
-
-      if @choices and solution_candidate.length > 0
+      #Don't look for solutions with too many of our chosen blocks
+      if @choices
         @choices.each_with_index do |choice, index|
           block_count = 0
-
           solution_candidate.each do |candidate| 
            if @possibility_space[candidate][index] == 1
              block_count += 1
            end
-
         if block_count > choice
-
           return
         end
         end
         end
       end
 
+      #We reduced the possibility space!
+      #Check if we have a solution
+      #Quickly print if we want to see new solutions as the come,
+      #because we're searching a massive tree
       if possibility_space.empty?
         if solution_candidate.length == @spaces/4
-
-#          puts solution_candidate
           @solutions.push(solution_candidate)
-          if @choices
+          if @quick_print
             output = @printer.convert_solution(solution_candidate, @possibility_space)
             @printer.print(output, @block_array)
             puts ''
@@ -109,42 +75,46 @@ module Tetrominoer
           return
         end
       end
-
-
-
-
       
+      #If there are no blocks(rows) in the possibility 
+      #space which fit into this space(column) kill this leaf
       column = @block_number
       empty = possibility_space.select{ |k,v| v[column] == 1 }
-      
       if empty.empty?
         return
       end
-      possibility_space.each do |p_candidate_key, possibility|
+
+      #Find all the possiblities which fit in this space(column)
+      #reduce the possiblity space, and recur
+      possibility_space.each do |possibility_key, possibility|
+        #If the possibility doesn't occupy this space, next
         if possibility[column] == 0
           next
         end
+
+        #Copy current solution candidate, add the given possibility
         s_candidate = solution_candidate.dup
-
-        s_candidate << p_candidate_key
-
+        s_candidate << possibility_key
         possibility_spaces = possibility[@block_number..-1]
 
+        #Copy the possibility space for this solution candidate's subprocess
         pspace = deep_copy(possibility_space)
-        pspace.delete(p_candidate_key)
-        #for j such that A[r,j] == 1, delete column j from matrix A
-        occupied_spaces = Array.new
+        #Start the reduction by deleting the latest possibility
+        pspace.delete(possibility_key)
 
+        #Find the spaces occupied by this block placement
+        occupied_spaces = Array.new
         possibility_spaces.each_with_index do |space, space_index|
           if space == 1
             occupied_spaces << space_index
           end
         end
+        
         #Control for the block identifier row
         occupied_spaces.map!{ |index| index + @block_number }
 
         #TODO Could be faster
-        #delete rows which overlap with the chosen row
+        #Delete possibilities which overlap with the chosen block placement
         pspace.each do |p_key, p|
           flag = false
           occupied_spaces.each do |space| 
@@ -157,51 +127,31 @@ module Tetrominoer
           end
         end
 
-        #delete the occupied columns in every row
+        #Delete the occupied spaces in every remaining row
         pspace.each do |key, row|
           delete_arr(row,occupied_spaces)
         end
 
-        solve_two(pspace,s_candidate)
+        solve(pspace,s_candidate)
        end
       return @solutions
-    end #end of solve two
+    end #end of solve method
 
+    #Copy links and values of an object
     def deep_copy(o)
       Marshal.load(Marshal.dump(o))
     end
 
-    def delete_arr(row,index_arr)
+    #Delete an array of indices from given array
+    def delete_arr(array,index_arr)
         index_arr.sort!
         shift = 0
         for i in index_arr
-          row.delete_at(i-shift)
+          array.delete_at(i-shift)
           shift += 1
         end
     end
 
-
-
-
-
   end #End of Solver
 
 end #End of module
-
-
-
-
-# n>>p
-#of rows
-#choose index (1)
-#check every row at index to find which ones occupy that space (n)
-#for each of those find all occupied spaces of that piece (p)
-#Find all rows which also occupy that space and delete them (n)
-#For those for spaces, delete that index from every row (n)
-#
-#of columns
-#find all rows which have one there, (n)
-#for each row find which columns are occupied by that piece (p)
-#for each row which also occupy those columns, delete that index (n)
-#delete those columns (4)
-#

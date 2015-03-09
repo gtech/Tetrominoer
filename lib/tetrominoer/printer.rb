@@ -40,10 +40,7 @@ module Tetrominoer
           if space_index = occupied_spaces.index(1)
             row = space_index/@columns
             column = space_index%@columns
-            #     begin
             @board_matrix[row][column] = block_name
-            #    rescue => e
-            #   end
             occupied_spaces[space_index] = 0
           end
         end
@@ -58,14 +55,9 @@ module Tetrominoer
       end
     end
 
-    def print_two(solution, block_array)
-      
-    end
-
     def convert_solution(solution, possibilities)
       output = Array.new
       solution.each do |s_key| 
-#        binding.pry
         output << possibilities[s_key]
       end
       return output

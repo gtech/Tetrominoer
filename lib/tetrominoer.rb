@@ -14,8 +14,6 @@
 #     You should have received a copy of the GNU General Public License
 #     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#!/usr/bin/env ruby
-
 require 'pry'
 require 'colorize'
 require 'tetrominoer/block'
@@ -57,20 +55,6 @@ require 'tetrominoer/printer'
 #of a block
 
 module Tetrominoer
-
- 
-    # def delete_at(o)
-     #  if o.class == Array
-      #   o.sort!
-       #  shift = 0
-        # for i in o
-    #       o.delete_at(i-shift)
-    #       shift += 1
-    #     end
-    #   else
-    #     delete_at(o)
-    #   end
-    # end
 
   class Runner
 

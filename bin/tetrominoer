@@ -21,7 +21,6 @@ require "tetrominoer"
 
 module Tetrominoer
 
-
   o = O.new()
   l = L.new()
   r = R.new()
@@ -30,31 +29,19 @@ module Tetrominoer
   z = Z.new()
   t = T.new()
 
-#  block_array = [l,r,i,o,s,z] #[o,l,r,i,s,z]
-#  choices = [1,1,1]
-#  block_array = [l,r,o]
-      choices = [2,1,2,1]
+  choices =     [2,1,2,1]
   block_array = [t,r,l,z]
- # block_array = [s,z,r,l,o,i] #[o,l,r,i,s,z]
+
   rows = 6
   columns = 4
   
   pg = PossibilityGenerator.new(rows,columns)
-  pg.generate_two(block_array)
-#  refined_choices = pg.refine_choices(block_array, choices)
+  pg.generate(block_array)
   possibilities = pg.possibility_space
 
-#  solver = Solver.new(possibilities, block_array.length)
-  solver = Solver.new(possibilities, block_array, rows, columns, choices)
-  solutions = solver.solve_two(possibilities)
-  puts solutions.length
-
-  # yaml_file = "data/solutions.yml"
-
-  
-  # file = File.open(yaml_file, 'w')
-  # YAML.dump(solutions, file)
-  # file.close
+#  solver = Solver.new(possibilities, block_array)
+  solver = Solver.new(possibilities, block_array, rows, columns, choices, true)
+  solutions = solver.solve(possibilities)
 
   if solutions
     printer = Printer.new(rows, columns)

@@ -44,12 +44,8 @@ module Tetrominoer
     #
     #When all blocks are exhausted, return the possibilty rows with the
     #block matrix attached
-    def generate(block_array)
-      #TODO edge cases, O still has one extra possibility on 3x3, figure out how to isolate it and try
-      #to generalize
-
+    def generate_inner(block_array)
       #Find every possible row of every config for every block
-
       block_array.each_with_index do |block, block_index|
         block_possibilities = Array.new
         #Find possible rows for every config of this block
@@ -123,8 +119,10 @@ module Tetrominoer
       return true
     end
 
-    def generate_two(block_array)
-      generate(block_array)
+    #This was a conversion function for separate solving algorithm functionality,
+    #but now it's become part of the workflow.
+    def generate(block_array)
+      generate_inner(block_array)
       possibility_hash = Hash.new
       for possibility_index in 0..(@possibility_space.length-1)
         possibility_hash[possibility_index] = possibility_space[possibility_index]
@@ -132,12 +130,6 @@ module Tetrominoer
       @possibility_space = possibility_hash
       return true
     end
-
-    def refine_choices(block_array, choices)
-      
-      
-    end
-
 
   end
 end
