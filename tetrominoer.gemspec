@@ -1,6 +1,6 @@
 Gem::Specification.new do |spec|
   spec.name        = "tetrominoer"
-  spec.version     = "0.1.0"
+  spec.version     = "0.1.1"
   spec.authors     = ["William Duncan"]
   spec.email       = ["will@aeondynamics.com"]
   spec.homepage    = "https://github.com/gtech/Tetrominoer"

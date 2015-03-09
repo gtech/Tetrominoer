@@ -29,7 +29,7 @@ module Tetrominoer
   z = Z.new()
   t = T.new()
 
-
+choices = false
 #-----------Configuration----------------------------------
 
   #Edit these if you want to narrow the number of possible pieces for a solution
@@ -52,8 +52,14 @@ module Tetrominoer
   pg.generate(block_array)
   possibilities = pg.possibility_space
 
-#  solver = Solver.new(possibilities, block_array)
-  solver = Solver.new(possibilities, block_array, rows, columns, choices, quickprint)
+  solver = Solver.new(possibilities, block_array)
+
+  if choices
+    solver = Solver.new(possibilities, block_array, rows, columns, choices, quickprint)
+  else
+    solver = Solver.new(possibilities, block_array, rows, columns)
+  end    
+
   solutions = solver.solve(possibilities)
 
   if solutions
@@ -64,7 +70,7 @@ module Tetrominoer
       printer.print(output, block_array)
       puts ''
     end
-    puts "Number of solutions: " + solutions.length
+    puts "Number of solutions: " + solutions.length.to_s
   else
     puts "Unsolvable"
   end

@@ -26,7 +26,9 @@ module Tetrominoer
       @solutions = Array.new
       @possibility_space = possibility_space
       @choices = choices
-      @printer = Printer.new(rows,columns)
+      if rows and columns
+        @printer = Printer.new(rows,columns)
+      end
       @block_array = block_array
       @quick_print = quick_print
     end
