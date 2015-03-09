@@ -1,3 +1,19 @@
+# Tetrominoer, solve small polyomino puzzles
+#     Copyright (C) 2015 William H Duncan III
+
+#     This program is free software: you can redistribute it and/or modify
+#     it under the terms of the GNU General Public License as published by
+#     the Free Software Foundation, either version 3 of the License, or
+#     (at your option) any later version.
+
+#     This program is distributed in the hope that it will be useful,
+#     but WITHOUT ANY WARRANTY; without even the implied warranty of
+#     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#     GNU General Public License for more details.
+
+#     You should have received a copy of the GNU General Public License
+#     along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
 module Tetrominoer
   class Solver
     #PARAMS: possibility_space<Array<Array>>, block_number<INT>
@@ -60,7 +76,7 @@ module Tetrominoer
     end
 
     def solve_two(possibility_space, solution_candidate = Array.new)
-#      binding.pry
+
       if @choices and solution_candidate.length > 0
         @choices.each_with_index do |choice, index|
           block_count = 0
@@ -80,7 +96,7 @@ module Tetrominoer
 
       if possibility_space.empty?
         if solution_candidate.length == @spaces/4
-#          binding.pry
+
 #          puts solution_candidate
           @solutions.push(solution_candidate)
           if @choices
@@ -100,7 +116,7 @@ module Tetrominoer
       
       column = @block_number
       empty = possibility_space.select{ |k,v| v[column] == 1 }
-      #     binding.pry
+      
       if empty.empty?
         return
       end
@@ -145,7 +161,7 @@ module Tetrominoer
         pspace.each do |key, row|
           delete_arr(row,occupied_spaces)
         end
-#        binding.pry
+
         solve_two(pspace,s_candidate)
        end
       return @solutions
@@ -169,14 +185,6 @@ module Tetrominoer
 
 
   end #End of Solver
-   # class Array
-   #   def values_at_a(array)
-   #     a = []
-   #     array.each{ |number| a += self.values_at(number)}
-   #     return a
-   #   end
-   # end
-
 
 end #End of module
 
