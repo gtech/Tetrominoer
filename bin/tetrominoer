@@ -74,4 +74,9 @@ choices = false
     puts "Unsolvable"
   end
 
+
+
+#runner = Runner.new(ARGV, STDIN, STDOUT)
+#runner.run
+
 end
