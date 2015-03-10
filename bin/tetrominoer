@@ -35,16 +35,16 @@ choices = false
   #Edit these if you want to narrow the number of possible pieces for a solution
   #Block array lets you chose which blocks you want avaibiale
   #Choices gives you the maximum number of the corresponding block in its index
-  block_array = [o,l,r,i,s,z,t]
-# choices =     [2,1,2,1]
-# block_array = [t,r,l,z]
+#  block_array = [o,l,r,i,s,z,t]
+ choices =     [2,3,2,1,2,2]
+ block_array = [r,l,s,i,t,o]
 
   #This is the size of the board you are putting your tetrominos on
-  rows = 4
-  columns = 3
+  rows = 6
+  columns = 8
 
   #Set to false if you don't want to be shown solutions until all have been found
-  quickprint = true
+  quickprint = false
   
 #-------------End of Configuration-------------------------
 
@@ -68,7 +68,6 @@ choices = false
       puts ''
       output = printer.convert_solution(solution, possibilities)
       printer.print(output, block_array)
-      puts ''
     end
     puts "Number of solutions: " + solutions.length.to_s
   else

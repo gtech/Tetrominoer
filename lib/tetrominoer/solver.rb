@@ -71,6 +71,7 @@ module Tetrominoer
             output = @printer.convert_solution(solution_candidate, @possibility_space)
             @printer.print(output, @block_array)
             puts ''
+            binding.pry
           end
           return @solutions
         else
